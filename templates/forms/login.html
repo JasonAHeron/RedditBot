@@ -4,7 +4,11 @@
   <form method="post" class="form">
     <h3 class="form-heading">Login <a href="{{ url_for('home') }}" title="Back to homepage"><i class="icon icon-home pull-right"></i></a></h3>
     {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
-    {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
+    {{ form.password(class_ = 'form-control second-input', placeholder = form.password.label.text, required = true) }}
+    {{ form.subreddits(class_ = 'form-control third-input', placeholder = "buildapcsales, hardwareswap", required = true, autofocus = true) }}
+    {{ form.searchwords(class_ = 'form-control fourth-input', placeholder = "gpu, cpu", required = true) }}
+    {{ form.recipient(class_ = 'form-control fifth-input', placeholder = "jason", required = true, autofocus = true) }}
+    {{ form.frequency(class_ = 'form-control last-input', placeholder = "20", required = true) }}
     <p class="pull-left"><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
     <p class="pull-right"><a href="{{ url_for('register') }}">Register</a></p>
     <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">

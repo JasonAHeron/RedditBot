@@ -28,11 +28,31 @@ body {
   z-index: 2;
 }
 .form-only-page .form input[type="text"],
-.form-only-page .form input[type="password"] {
+.form-only-page .form input[type="password"]
+.form-only-page .form input[type="text"]
+.form-only-page .form input[type="text"]
+.form-only-page .form input[type="text"]
+.form-only-page .form input[type="text"]{
   margin-bottom: -1px;
   border-radius: 0;
 }
 .form-only-page .form input.first-input {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.form-only-page .form input.second-input {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.form-only-page .form input.third-input {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.form-only-page .form input.fourth-input {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.form-only-page .form input.fifth-input {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
