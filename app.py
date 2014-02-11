@@ -10,6 +10,7 @@ from forms import *
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 import time
 import praw
+import inspect
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -38,58 +39,42 @@ def login_required(test):
             return redirect(url_for('login'))
     return wrap
 '''
+
 #----------------------------------------------------------------------------#
-# Controllers.
+# Form Classes.
 #----------------------------------------------------------------------------#
 
 class BotForm(Form):
-    name = TextField('Username')
-    password = PasswordField('Password')
     subreddits = TextField('buildapcsales, hardwareswap')
     searchwords = TextField('cpu, gpu')
     frequency = TextField('20')
     recipient = TextField('jason')
 
+#----------------------------------------------------------------------------#
+# Controllers.
+#----------------------------------------------------------------------------#
 
-
-global reddit_session
-reddit_session = 0
-global subreddit_names
-subreddit_names = 0
-global search_words
-search_words = 0
-global frequency
-frequency = 0
-global recipient
-recipient = 0
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('pages/placeholder.home.html')
+    if request.method == 'POST':
+        subreddit_names = getSubredditNames(request.form['subreddits'])
+        search_words = getSearchWords(request.form['searchwords'])
+        frequency = getFrequency(request.form['frequency'])
+        recipient = getRecipient(request.form['recipient'])
+        compileBot(subreddit_names, search_words, frequency, recipient)
+        return send_from_directory(directory='.', filename='AACompiled.py')
+    else:
+        form = BotForm(request.form)
+        return render_template('pages/placeholder.home.html', form=form)
 
 @app.route('/about')
 def about():
     return render_template('pages/placeholder.about.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login')
 def login():
-    if request.method == 'POST':
-        global reddit_session
-        reddit_session = botInit(request.form['name'], request.form['password'])
-        subreddit_names = getSubredditNames(request.form['subreddits'])
-        search_words = getSearchWords(request.form['searchwords'])
-        frequency = getFrequency(request.form['frequency'])
-        recipient = getRecipient(request.form['recipient'])
-        searchBot(reddit_session,subreddit_names,search_words,frequency,recipient)
-        #if request.form['name'] == 'admin' and request.form['password'] == 'admin':
-        return redirect(url_for('home'))
-    else:
-        form = BotForm(request.form)
-        return render_template('forms/login.html', form = form)
+    return redirect(url_for('home'))
 
-#@app.route('/bot', methods=['GET', 'POST'])
-#def bot():
-    #return searchBot(reddit_session)
 
 @app.route('/register')
 def register():
@@ -123,43 +108,73 @@ if not app.debug:
 
 
 
+#----------------------------------------------------------------------------#
+# Bot Code.
+#----------------------------------------------------------------------------#
 
 
-DEBUG = True
+
+def compileBot(subreddit_names, search_words, frequency, recipient):
+    file = open('AACompiled.py', 'w+')
+    print >> file, 'import praw'
+    print >> file, 'import time'
+    print >> file, 'subreddit_names = ', subreddit_names
+    print >> file, 'search_words = ', search_words
+    print >> file, 'frequency = {}'.format(frequency)
+    print >> file, 'recipient = "{}"'.format(recipient)
+    printFunction(file, throwError)
+    printFunction(file, botInit)
+    printFunction(file, sendResults)
+    printFunction(file, searchBot)
+    printFunction(file, runBot)
+    print >> file, 'if __name__ == "__main__":'
+    print >> file, '    runBot(subreddit_names, search_words, frequency, recipient)'
+    file.close()
+
+def runBot(subreddit_names, searchWords, frequency, recipient):
+    r = botInit("none", "none", False)
+    searchBot(r, subreddit_names, searchWords, frequency, recipient)
+
+def printFunction(file, function):
+    for line in inspect.getsourcelines(function)[0]:
+        file.write(str(line))
 
 def throwError(error = "unhandled", exit=True, code=0):
     print "There was an error: {}".format(error)
     if exit:
         exit(code)
 
-def botInit(username, password):
+def botInit(username, password, auto=True):
     r = praw.Reddit('PRAW learning and testing v0.3 by /u/syserror')
     try:
-        r.login(username, password)
+        if auto:
+            r.login(username, password)
+        else:
+            r.login()
     except praw.errors.InvalidUserPass as err:
         throwError(err)
     return r
 
 def getSubredditNames(input):
-    subreddit_names = input.replace(" ", "").split(",")
+    subreddit_names = [str(subreddit) for subreddit in input.replace(" ", "").split(",")]
     return subreddit_names
 
 def getSearchWords(input):
     searchWords = []
     newSearchWords = input.lower().split(",")
-    newSearchWords = [searchWord.lstrip() for searchWord in newSearchWords]
+    newSearchWords = [str(searchWord.lstrip()) for searchWord in newSearchWords]
     searchWords.append(newSearchWords)
     return searchWords
 
 def getFrequency(input):
-    frequency = int(input)
+    frequency = float(input)
     return frequency
 
 def getRecipient(input):
-    recipient = input
+    recipient = str(input)
     return recipient
 
-def dumpResults(r, results, message = False, recipient = "none"):
+def sendResults(r, results, message = False, recipient = "none"):
     if message:
         for result in results:
             r.user.send_message(recipient, result)
@@ -192,11 +207,10 @@ def searchBot(r, subreddit_names, searchWords, frequency, recipient):
                 except praw.errors.InvalidSubreddit as err:
                     throwError(err,False)
         if firstPass:
-            dumpResults(r, first_results)
-        dumpResults(r, results, True, recipient)
+            sendResults(r, first_results)
+        sendResults(r, results, True, recipient)
         firstPass = False
         time.sleep(max(frequency,20))
-
 
 #----------------------------------------------------------------------------#
 # Launch.

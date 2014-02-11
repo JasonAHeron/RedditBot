@@ -3,8 +3,6 @@
 {% block content %}
   <form method="post" class="form">
     <h3 class="form-heading">Login <a href="{{ url_for('home') }}" title="Back to homepage"><i class="icon icon-home pull-right"></i></a></h3>
-    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
-    {{ form.password(class_ = 'form-control second-input', placeholder = form.password.label.text, required = true) }}
     {{ form.subreddits(class_ = 'form-control third-input', placeholder = "buildapcsales, hardwareswap", required = true, autofocus = true) }}
     {{ form.searchwords(class_ = 'form-control fourth-input', placeholder = "gpu, cpu", required = true) }}
     {{ form.recipient(class_ = 'form-control fifth-input', placeholder = "jason", required = true, autofocus = true) }}
