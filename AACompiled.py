@@ -1,61 +1,57 @@
 import praw
 import time
-subreddit_names =  ['awdklj']
-search_words =  [['awklj']]
+subreddit_names =  ['hardwareswap', 'buildapcsales']
+search_words =  [['$250', 'I']]
 frequency = 20.0
-recipient = "akwldj"
+recipient = "111qq"
 def throwError(error = "unhandled", exit=True, code=0):
     print "There was an error: {}".format(error)
     if exit:
         exit(code)
 def botInit(username, password, auto=True):
-    r = praw.Reddit('PRAW learning and testing v0.3 by /u/syserror')
+    r = praw.Reddit('PRAW learning and testing v0.5 by /u/syserror')
     try:
         if auto:
             r.login(username, password)
         else:
-            r.login()
+            r.login("111qq","9175Rape")
     except praw.errors.InvalidUserPass as err:
         throwError(err)
     return r
-def sendResults(r, results, message = False, recipient = "none"):
+def outputResults(r, results, message = False, recipient = "none"):
     if message:
         for result in results:
             r.user.send_message(recipient, result)
     else:
         for result in results:
             print result
-def searchBot(r, subreddit_names, searchWords, frequency, recipient):
+def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
+    if firstPass:
+        first_results = []
+    results = []
+    for subreddit_name in subreddit_names:
+        subreddit = r.get_subreddit(subreddit_name)
+        for submission in subreddit.get_hot(limit=100):
+            full_submission = r.get_submission(submission_id=submission.id)
+            full_submission.replace_more_comments(limit=16, threshold=10)
+            flat_comments = praw.helpers.flatten_tree(full_submission.comments)
+            for comment in flat_comments:
+                if not hasattr(comment, 'body'):
+                    continue
+                print comment.body
 
-    already_done = []
-    firstPass = True
-    first_results = []
+                
+def titleSearchBot(r, subreddit_names, searchWords, frequency, recipient):
+    commentSearch(r, subreddit_names, searchWords, True)
+    already_done = results['already_done']
+    outputResults(r, results['first_results'])
     while True:
-        results = []
-        for subreddit_name in subreddit_names:
-            for searchWord in searchWords:
-                subreddit = r.get_subreddit(subreddit_name)
-                try:
-                    for submission in subreddit.get_hot(limit=100):
-                        title_text = submission.title.lower()
-                        has_text = any(string in title_text for string in searchWord)
-                        if submission.id not in already_done and has_text:
-                            if not firstPass:
-                                msg = '[NEW FIND IN: %s] %s (%s)' % (subreddit_name.upper(),submission.title ,submission.short_link)
-                                #r.user.send_message(recipient, msg)
-                                results.append(msg)
-                            else:
-                                first_results.append(subreddit_name.upper() + " :: " + submission.title + " :: " + submission.short_link)
-                            already_done.append(submission.id)
-                except praw.errors.InvalidSubreddit as err:
-                    throwError(err,False)
-        if firstPass:
-            sendResults(r, first_results)
-        sendResults(r, results, True, recipient)
-        firstPass = False
+        results = titleSearch(r, subreddit_names, searchWords, False, already_done)
+        already_done = results['already_done']
+        outputResults(r, results['results'], True, recipient)
         time.sleep(max(frequency,20))
 def runBot(subreddit_names, searchWords, frequency, recipient):
     r = botInit("none", "none", False)
-    searchBot(r, subreddit_names, searchWords, frequency, recipient)
+    titleSearchBot(r, subreddit_names, searchWords, frequency, recipient)
 if __name__ == "__main__":
     runBot(subreddit_names, search_words, frequency, recipient)
