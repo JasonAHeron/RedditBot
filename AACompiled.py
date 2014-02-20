@@ -1,9 +1,9 @@
 import praw
 import time
-subreddit_names =  ['hardwareswap']
-search_words =  [['gpu']]
+subreddit_names =  ['awdklj']
+search_words =  [['awklj']]
 frequency = 20.0
-recipient = "jason"
+recipient = "akwldj"
 def throwError(error = "unhandled", exit=True, code=0):
     print "There was an error: {}".format(error)
     if exit:
