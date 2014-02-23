@@ -1,8 +1,8 @@
 import praw
 import time
 from tqdm import *
-subreddit_names =  ['hardwareswap']
-search_words =  [['$250']]
+subreddit_names =  ['buildapcsales']
+search_words =  [['gpu']]
 frequency = 20.0
 recipient = "111qq"
 def throwError(error = "unhandled", exit=True, code=0):
@@ -19,13 +19,9 @@ def botInit(username, password, auto=True):
     except praw.errors.InvalidUserPass as err:
         throwError(err)
     return r
-def outputResults(r, results, message = False, recipient = "none"):
-    if message:
-        for result in results:
-            r.user.send_message(recipient, result)
-    else:
-        for result in results:
-            print result
+def messageResponse(results, r, recipient):
+    for result in results:
+        r.user.send_message(recipient, result)
 def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     searchWords = searchWords[0]
     if firstPass:
@@ -33,7 +29,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     results = []
     for subreddit_name in subreddit_names:
         subreddit = r.get_subreddit(subreddit_name)
-        for submission in tqdm(subreddit.get_hot(limit=100),"comments",100):
+        for submission in tqdm(subreddit.get_hot(limit=100),("searching:" + subreddit_name),100):
             full_submission = r.get_submission(submission_id=submission.id)
             full_submission.replace_more_comments(limit=16, threshold=10)
             flat_comments = praw.helpers.flatten_tree(full_submission.comments)
@@ -52,17 +48,17 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     if firstPass:
         return {'first_results':first_results , 'already_done':already_done}
     return {'results':results , 'already_done':already_done}
-def commentSearchBot(r, subreddit_names, searchWords, frequency, recipient):
-    results = commentSearch(r, subreddit_names, searchWords, True)
+def SearchBot(r, subreddit_names, searchWords, frequency, recipient, type, action):
+    results = eval(type+ "Search(r, subreddit_names, searchWords, True)")
     already_done = results['already_done']
-    outputResults(r, results['first_results'])
+    eval(action + "Response(results['first_results'], r, recipient)")
     while True:
-        results = commentSearch(r, subreddit_names, searchWords, False, already_done)
+        results = eval(type + "Search(r, subreddit_names, searchWords, False, already_done)")
         already_done = results['already_done']
-        outputResults(r, results['results'], True, recipient)
+        eval(action + "Response(results['results'], r, recipient)")
         time.sleep(max(frequency,20))
-def runBot(subreddit_names, searchWords, frequency, recipient):
+def runBot(subreddit_names, searchWords, frequency, recipient, type, action):
     r = botInit("none", "none", False)
-    commentSearchBot(r, subreddit_names, searchWords, frequency, recipient)
+    SearchBot(r, subreddit_names, searchWords, frequency, recipient, type, action)
 if __name__ == "__main__":
-    runBot(subreddit_names, search_words, frequency, recipient)
+    runBot(subreddit_names, search_words, frequency, recipient, "comment", "message")

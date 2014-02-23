@@ -34,22 +34,25 @@ def printFunction(file, function):
     for line in inspect.getsourcelines(function)[0]:
         file.write(str(line))
 
-def compileBot(subreddit_names, search_words, frequency, recipient):
+def compileBotCore(subreddit_names, search_words, frequency, recipient, type="comment", action="message"):
     file = open('AACompiled.py', 'w+')
     print >> file, 'import praw'
     print >> file, 'import time'
+    print >> file, 'from tqdm import *'
     print >> file, 'subreddit_names = ', subreddit_names
     print >> file, 'search_words = ', search_words
     print >> file, 'frequency = {}'.format(frequency)
     print >> file, 'recipient = "{}"'.format(recipient)
+#    print >> file, 'type = "{}"'.format(type)
+#    print >> file, 'action = "{}"'.format(action)
     printFunction(file, throwError)
     printFunction(file, botInit)
-    printFunction(file, outputResults)
-    printFunction(file, commentSearch)
-    printFunction(file, commentSearchBot)
+    printFunction(file, eval(action + "Response"))
+    printFunction(file, eval(type + "Search"))
+    printFunction(file, SearchBot)
     printFunction(file, runBot)
     print >> file, 'if __name__ == "__main__":'
-    print >> file, '    runBot(subreddit_names, search_words, frequency, recipient)'
+    print >> file, '    runBot(subreddit_names, search_words, frequency, recipient, "' + type+ '", "' + action + '")'
     file.close()
 
 #----------------------------------------------------------------------------#
@@ -78,21 +81,21 @@ def botInit(username, password, auto=True):
         throwError(err)
     return r
 
-def runBot(subreddit_names, searchWords, frequency, recipient):
+def runBot(subreddit_names, searchWords, frequency, recipient, type, action):
     r = botInit("none", "none", False)
-    commentSearchBot(r, subreddit_names, searchWords, frequency, recipient)
+    SearchBot(r, subreddit_names, searchWords, frequency, recipient, type, action)
 
 #-------------------------------------#
 # Result related
 #-------------------------------------#
 
-def outputResults(r, results, message = False, recipient = "none"):
-    if message:
-        for result in results:
-            r.user.send_message(recipient, result)
-    else:
-        for result in results:
-            print result
+def printResponse(results,r=0, recipient = "none"):
+    for result in results:
+        print result
+
+def messageResponse(results, r, recipient):
+    for result in results:
+        r.user.send_message(recipient, result)
 
 #-------------------------------------#
 # Search related
@@ -106,7 +109,7 @@ def titleSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
         for searchWord in searchWords:
             subreddit = r.get_subreddit(subreddit_name)
             try:
-                for submission in subreddit.get_hot(limit=100):
+                for submission in tqdm(subreddit.get_hot(limit=100), ("searching:" + subreddit_name), 100):
                     title_text = submission.title.lower()
                     has_text = any(string in title_text for string in searchWord)
                     if submission.id not in already_done and has_text:
@@ -129,7 +132,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     results = []
     for subreddit_name in subreddit_names:
         subreddit = r.get_subreddit(subreddit_name)
-        for submission in tqdm(subreddit.get_hot(limit=100),"comments",100):
+        for submission in tqdm(subreddit.get_hot(limit=100),("searching:" + subreddit_name),100):
             full_submission = r.get_submission(submission_id=submission.id)
             full_submission.replace_more_comments(limit=16, threshold=10)
             flat_comments = praw.helpers.flatten_tree(full_submission.comments)
@@ -161,25 +164,15 @@ def commentTitleSearch(r, subreddit_names, searchWords):
             #    comment.reply(' world!')
 
 #-------------------------------------#
-# Final Bots
+# Final Bot
 #-------------------------------------#
 
-def titleSearchBot(r, subreddit_names, searchWords, frequency, recipient):
-    results = titleSearch(r, subreddit_names, searchWords, True)
+def SearchBot(r, subreddit_names, searchWords, frequency, recipient, type, action):
+    results = eval(type+ "Search(r, subreddit_names, searchWords, True)")
     already_done = results['already_done']
-    outputResults(r, results['first_results'])
+    eval(action + "Response(results['first_results'], r, recipient)")
     while True:
-        results = titleSearch(r, subreddit_names, searchWords, False, already_done)
+        results = eval(type + "Search(r, subreddit_names, searchWords, False, already_done)")
         already_done = results['already_done']
-        outputResults(r, results['results'], True, recipient)
-        time.sleep(max(frequency,20))
-
-def commentSearchBot(r, subreddit_names, searchWords, frequency, recipient):
-    results = commentSearch(r, subreddit_names, searchWords, True)
-    already_done = results['already_done']
-    outputResults(r, results['first_results'])
-    while True:
-        results = commentSearch(r, subreddit_names, searchWords, False, already_done)
-        already_done = results['already_done']
-        outputResults(r, results['results'], True, recipient)
+        eval(action + "Response(results['results'], r, recipient)")
         time.sleep(max(frequency,20))

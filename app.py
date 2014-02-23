@@ -36,7 +36,20 @@ def home():
         search_words = getSearchWords(request.form['searchwords'])
         frequency = getFrequency(request.form['frequency'])
         recipient = getRecipient(request.form['recipient'])
-        compileBot(subreddit_names, search_words, frequency, recipient)
+
+        if request.form.get("title"):
+            type = "title"
+        elif request.form.get("comment"):
+            type = "comment"
+
+        if request.form.get("print"):
+            action = "print"
+        elif request.form.get("message"):
+            action = "message"
+        elif request.form.get("respond"):
+            action = "respond"
+
+        compileBotCore(subreddit_names, search_words, frequency, recipient, type, action)
         return send_from_directory(directory='.', filename='AACompiled.py')
     else:
         form = searchBotForm(request.form)
