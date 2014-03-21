@@ -34,7 +34,7 @@ def printFunction(file, function):
     for line in inspect.getsourcelines(function)[0]:
         file.write(str(line))
 
-def compileBotCore(subreddit_names, search_words, frequency, recipient, type="comment", action="message"):
+def compileBotCore(subreddit_names, search_words, frequency, recipient, type="comment", action="print"):
     file = open('AACompiled.py', 'w+')
     print >> file, 'import praw'
     print >> file, 'import time'
@@ -43,11 +43,11 @@ def compileBotCore(subreddit_names, search_words, frequency, recipient, type="co
     print >> file, 'search_words = ', search_words
     print >> file, 'frequency = {}'.format(frequency)
     print >> file, 'recipient = "{}"'.format(recipient)
-#    print >> file, 'type = "{}"'.format(type)
-#    print >> file, 'action = "{}"'.format(action)
     printFunction(file, throwError)
     printFunction(file, botInit)
     printFunction(file, eval(action + "Response"))
+    if(type is "title_comment"):
+        printFunction(file, titleSearch)
     printFunction(file, eval(type + "Search"))
     printFunction(file, SearchBot)
     printFunction(file, runBot)
@@ -89,13 +89,17 @@ def runBot(subreddit_names, searchWords, frequency, recipient, type, action):
 # Result related
 #-------------------------------------#
 
-def printResponse(results,r=0, recipient = "none"):
+def printResponse(results,r = 0, recipient = "none"):
     for result in results:
         print result
 
 def messageResponse(results, r, recipient):
     for result in results:
         r.user.send_message(recipient, result)
+
+def respondResponse(results, r = 0, recipient = "none"):
+    for result in results:
+        result.reply("test")
 
 #-------------------------------------#
 # Search related
@@ -109,7 +113,7 @@ def titleSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
         for searchWord in searchWords:
             subreddit = r.get_subreddit(subreddit_name)
             try:
-                for submission in tqdm(subreddit.get_hot(limit=100), ("searching:" + subreddit_name), 100):
+                for submission in tqdm(subreddit.get_hot(limit=100), ("searching:" + subreddit_name), 100, False):
                     title_text = submission.title.lower()
                     has_text = any(string in title_text for string in searchWord)
                     if submission.id not in already_done and has_text:
@@ -132,7 +136,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     results = []
     for subreddit_name in subreddit_names:
         subreddit = r.get_subreddit(subreddit_name)
-        for submission in tqdm(subreddit.get_hot(limit=100),("searching:" + subreddit_name),100):
+        for submission in tqdm(subreddit.get_hot(limit=100),("searching:" + subreddit_name),100, False):
             full_submission = r.get_submission(submission_id=submission.id)
             full_submission.replace_more_comments(limit=16, threshold=10)
             flat_comments = praw.helpers.flatten_tree(full_submission.comments)
@@ -152,7 +156,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
         return {'first_results':first_results , 'already_done':already_done}
     return {'results':results , 'already_done':already_done}
 
-def commentTitleSearch(r, subreddit_names, searchWords):
+def title_commentSearch(r, subreddit_names, searchWords, first_pass, already_done=[]):
     results = titleSearch(r, subreddit_names, searchWords, True)
     submission_ids = results['already_done']
     for submission_id in submission_ids:

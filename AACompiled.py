@@ -1,10 +1,10 @@
 import praw
 import time
 from tqdm import *
-subreddit_names =  ['buildapcsales']
-search_words =  [['gpu']]
+subreddit_names =  ['python', 'programming']
+search_words =  [['bot', 'praw']]
 frequency = 20.0
-recipient = "111qq"
+recipient = "none"
 def throwError(error = "unhandled", exit=True, code=0):
     print "There was an error: {}".format(error)
     if exit:
@@ -19,9 +19,9 @@ def botInit(username, password, auto=True):
     except praw.errors.InvalidUserPass as err:
         throwError(err)
     return r
-def messageResponse(results, r, recipient):
+def printResponse(results,r = 0, recipient = "none"):
     for result in results:
-        r.user.send_message(recipient, result)
+        print result
 def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     searchWords = searchWords[0]
     if firstPass:
@@ -29,7 +29,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     results = []
     for subreddit_name in subreddit_names:
         subreddit = r.get_subreddit(subreddit_name)
-        for submission in tqdm(subreddit.get_hot(limit=100),("searching:" + subreddit_name),100):
+        for submission in tqdm(subreddit.get_hot(limit=100),("searching:" + subreddit_name),100, False):
             full_submission = r.get_submission(submission_id=submission.id)
             full_submission.replace_more_comments(limit=16, threshold=10)
             flat_comments = praw.helpers.flatten_tree(full_submission.comments)
@@ -61,4 +61,4 @@ def runBot(subreddit_names, searchWords, frequency, recipient, type, action):
     r = botInit("none", "none", False)
     SearchBot(r, subreddit_names, searchWords, frequency, recipient, type, action)
 if __name__ == "__main__":
-    runBot(subreddit_names, search_words, frequency, recipient, "comment", "message")
+    runBot(subreddit_names, search_words, frequency, recipient, "comment", "print")

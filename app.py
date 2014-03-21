@@ -41,6 +41,8 @@ def home():
             type = "title"
         elif request.form.get("comment"):
             type = "comment"
+        elif request.form.get("title_comment"):
+            type = "title_comment"
 
         if request.form.get("print"):
             action = "print"
