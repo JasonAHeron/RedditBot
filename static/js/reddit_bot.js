@@ -33,16 +33,15 @@
         };
 
         // start by hiding the container
-        var genContainer = $('#gen-container');
 
         generate_code(data)
             .then(function(data){
 
                 $('#gen-code')
-                    .html(data)
-                    .done(function(){
-                        $('#gen-container').slideDown();
-                    });
+                    .html(data);
+
+                $('#gen-container').show();
+
             });
     });
 
