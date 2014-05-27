@@ -180,8 +180,9 @@ def titleSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
 
             #
             try:
-                getHot    = tqdm(subreddit.get_hot(limit=100)
-                nameTuple = (("searching:" + subreddit_name), 100, False)
+                getHot    = tqdm(subreddit.get_hot(limit=100))
+                nameTuple = (("searching:{}".format(subreddit_name)), 100, 
+                    False)
 
                 #
                 for submission in getHot, nameTuple:
@@ -230,8 +231,8 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
     for subreddit_name in subreddit_names:
 
         subreddit = r.get_subreddit(subreddit_name)
-        getHot    = tqdm(subreddit.get_hot(limit=100)
-        nameTuple = (("searching:" + subreddit_name),100, False)
+        getHot    = tqdm(subreddit.get_hot(limit=100))
+        nameTuple = (("searching:{}".format(subreddit_name)),100, False)
 
         for submission in getHot, nameTuple:
             full_submission = r.get_submission(submission_id=submission.id)
@@ -250,8 +251,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
                         swLower = searchWord.lower()
                         cwLower = comment_word.lower()
 
-                        if swLower == cwLower 
-                            and comment.id not in already_done:
+                        if (swLower == cwLower) and comment.id not in already_done:
                             
                             if not firstPass:
                                 results.append(comment)
