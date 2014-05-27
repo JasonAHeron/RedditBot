@@ -37,6 +37,22 @@ def home():
         frequency = getFrequency(request.form['frequency'])
         recipient = getRecipient(request.form['recipient'])
 
+        allowed_types = ["title", "comment", "title_comment"]
+        allowed_actions = ["print", "message", "respond"]
+
+        attempted_type = request.form.get("type")
+        if attempted_type in allowed_types:
+            type = attempted_type
+        else:
+            type = "title"
+
+        attempted_action = request.form.get("action")
+        if attempted_action in allowed_actions:
+            action = attempted_action
+        else:
+            action = "print"
+
+        '''
         if request.form.get("title"):
             type = "title"
         elif request.form.get("comment"):
@@ -50,6 +66,8 @@ def home():
             action = "message"
         elif request.form.get("respond"):
             action = "respond"
+
+        '''
 
         compileBotCore(subreddit_names, search_words, frequency, recipient, type, action)
         return send_from_directory(directory='/home/ubuntu/', filename='AACompiled.py')
