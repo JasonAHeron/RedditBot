@@ -18,18 +18,6 @@
         return deferred.promise;
     }
 
-    function initiate_code_change(data) {
-        generate_code(data)
-            .then(function(data){
-
-                $('#gen-code')
-                    .html(data)
-                    .done(function(){
-                        $('#gen-container').slideDown();
-                    });
-            });
-    }
-
     // handle the form submission -- perform it asyncronously
     $('#btn-bot-form-submit').click(function(e){
         e.preventDefault();
@@ -47,15 +35,15 @@
         // start by hiding the container
         var genContainer = $('#gen-container');
 
-        // if container is already hidden, dont bother sliding up
-        if(genContainer.is(':visible')){
-            genContainer.slideUp()
-                .done(function(){
-                    initiate_code_change(data)
-                });
-        } else {
-            initiate_code_change(data);
-        }
+        generate_code(data)
+            .then(function(data){
+
+                $('#gen-code')
+                    .html(data)
+                    .done(function(){
+                        $('#gen-container').slideDown();
+                    });
+            });
     });
 
 })(jQuery, Q);
