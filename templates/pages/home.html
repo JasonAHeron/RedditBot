@@ -15,6 +15,7 @@
             <div class="form-group">
                 {{ 
                     form.subreddits(
+                        id_         = 'ctrl-subreddits',
                         class_      = 'form-control first-input', 
                         placeholder = "subreddits: buildapcsales, hardwareswap",
                         required    = true, autofocus = true
@@ -24,6 +25,7 @@
             <div class="form-group">
                 {{ 
                     form.searchwords(
+                        id_         = 'ctrl-searchwords',
                         class_      = 'form-control first-input', 
                         placeholder = "search terms: gpu, cpu", 
                         required    = true
@@ -33,6 +35,7 @@
             <div class="form-group">
                 {{ 
                     form.recipient(
+                        id_         = 'ctrl-recipient',
                         class_      = 'form-control first-input', 
                         placeholder = "recipient: jason", 
                         required    = true
@@ -42,6 +45,7 @@
             <div class="form-group">
                 {{ 
                     form.frequency(
+                        id_         = 'ctrl-frequency',
                         class_ = 'form-control first-input', 
                         placeholder = "reddit refresh rate: min 20 (seconds)", 
                         required = true

@@ -9,14 +9,11 @@
     function generate_code (data) {
         var deferred = Q.defer();
 
-        console.log($);
-
         $.post(api_url, data, function(res){
-            console.log('returned');
             deferred.resolve(res);
         });
 
-        return deferred.promise();
+        return deferred.promise;
     }
 
     // handle the form submission -- perform it asyncronously
@@ -25,17 +22,18 @@
 
         // get form control values
         var data = {
-            subreddits  : 'a, b',
-            searchwords : 'a, b',
-            frequency   : 20,
-            recipient   : 'user',
-            type        : 'title',
-            action      : 'print'
+            subreddits  : $('#ctrl-subreddits').val(),
+            searchwords : $('#ctrl-searchwords').val(),
+            frequency   : $('#ctrl-frequency').val(),
+            recipient   : $('#ctrl-recipient').val(),
+            type        : $('#ctrl-type').val(),
+            action      : $('#ctrl-action').val()
         };
 
         generate_code(data)
             .then(function(data){
-                console.log(data);
+
+                // TODO: replace the contents of that code box with data
             });
     });
 
