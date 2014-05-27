@@ -1,116 +1,78 @@
+<!-- 
+RedditBot: main layout
+  -->
 <!doctype html>
-<head>
-<meta charset="utf-8">
-<title>{% block title %}{% endblock %}</title>
 
-<!-- meta -->
-<meta name="description" content="">
-<meta name="author" content="">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- /meta -->
+<html lang="en-us">
+    <head>
+        <!-- metadata -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
 
-<!-- styles -->
-<link type="text/css" rel="stylesheet" href="/static/css/font-awesome-3.2.1.min.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-3.0.0.min.css">
-<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme-3.0.0.min.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/layout.main.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.responsive.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.quickfix.css" />
-<!-- /styles -->
+        <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="static/css/reddit_bot.css">
 
-<!-- favicons -->
-<link rel="shortcut icon" href="/static/ico/favicon.png">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="/static/ico/favicon.png">
-<!-- /favicons -->
+        <!-- modernizr and media queries for <= IE9 -->
+        <!--<script src="/static/js/libs/modernizr-2.6.2.min.js"></script> -->
+        <!--[if lt IE 9]>
+            <script src="/static/js/libs/respond-1.3.0.min.js"></script>
+        <![endif]-->
+    </head>
 
-<!-- scripts -->
-<script src="/static/js/libs/modernizr-2.6.2.min.js"></script>
-<!--[if lt IE 9]><script src="/static/js/libs/respond-1.3.0.min.js"></script><![endif]-->
-<!-- /scripts -->
+    <body>
+        <!-- Page header -->
+        <header class="navbar navbar-default navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button 
+                        class="navbar-toggle" 
+                        type="button" 
+                        data-toggle="collapse" 
+                        data-target=".rb-navbar-collapse">
 
-</head>
-<body>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="../" class="navbar-brand">RedditBot</a>
+                </div>
 
-  <!-- Wrap all page content here -->
-  <div id="wrap">
-
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Build a Reddit Bot</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-           <!-- <li {% if request.endpoint == 'home' %} class="active" {% endif %}><a href="{{ url_for('home') }}">Home</a></li> -->
-            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">Other Bots<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a>Action</a></li>
-                <li><a>Another action</a></li>
-                <li><a>Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a>Separated link</a></li>
-                <li><a>One more separated link</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
-
-    <!-- Begin page content -->
-    <main id="content" role="main" class="container">
-
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-block alert-error fade in">
-              <a class="close" data-dismiss="alert">&times;</a>
-              {{ message }}
+                <nav class="collapse navbar-collapse rb-navbar-collapse" role="navigation">
+                    <ul class="nav navbar-nav">
+                        <li class="{{'active' if request.endpoint == 'about'}}">
+                            <a href="{{ url_for('about') }}" >About</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+        </header>
 
-      {% block content %}{% endblock %}
-      
-    </main>
+        <!-- app content -->
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-block alert-error">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}{% endif %}{% endwith %}
 
-  </div>
+            {% block content %}{% endblock %}
+        </div>
 
-  <div id="footer">
-    <div class="container">
-      <p>buildaredditbot &copy; All Rights Reserved.</p>
-      {% block footer %}{% endblock %}
-    </div>
-  </div>
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="/static/js/libs/jquery-1.10.2.min.js"><\/script>')</script>
-  <script defer src="/static/js/libs/bootstrap-3.0.0.min.js"></script>
-  <script defer src="/static/js/plugins.js"></script>
-  <script defer src="/static/js/script.js"></script>
-  <script defer src="/static/js/libs/pleasework.js"></script>
-  <!-- Google Analytics - Change UA-XXXXX-X to be your site's ID -->
-  <script>
-  window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
-  Modernizr.load({
-    load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
-  });
-  </script>
-
-</body>
+        <!-- load scripts -->
+        <script type="text/javascript" 
+            src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="static/js/q.min.js"></script>
+        <!-- application script -->
+        <script type="text/javascript" src="static/js/reddit_bot.js"></script>
+    </body>
 </html>

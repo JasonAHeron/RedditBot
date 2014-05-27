@@ -1,46 +1,104 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Build a Reddit Bot{% endblock %}
 {% block content %}
-<div class="page-header">
-    <h1>Proof of concept: Search Bot</h1>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h1>RedditBot -- Proof of Concept</h1>
+    </div>
 </div>
-<h2>Search Configuration</h2>
-<form method="post" class="form">
-    {{ form.subreddits(class_ = 'form-control first-input', placeholder = "subreddits: buildapcsales, hardwareswap",
-    required = true, autofocus = true) }}
-    {{ form.searchwords(class_ = 'form-control first-input', placeholder = "search terms: gpu, cpu", required = true) }}
-    {{ form.recipient(class_ = 'form-control first-input', placeholder = "recipient: jason", required = true) }}
-    {{ form.frequency(class_ = 'form-control first-input', placeholder = "reddit refresh rate: min 20 (seconds)", required = true)
-    }}
-    <h2>Where to search</h2>
 
+<div class="row">
+    <div class="col-md-4">
+        <h2>search configuration</h2>
+        <form id="search-form" method="post" role="form">
+            <div class="form-group">
+                {{ 
+                    form.subreddits(
+                        class_      = 'form-control first-input', 
+                        placeholder = "subreddits: buildapcsales, hardwareswap",
+                        required    = true, autofocus = true
+                    ) 
+                }}
+            </div>
+            <div class="form-group">
+                {{ 
+                    form.searchwords(
+                        class_      = 'form-control first-input', 
+                        placeholder = "search terms: gpu, cpu", 
+                        required    = true
+                    ) 
+                }}
+            </div>
+            <div class="form-group">
+                {{ 
+                    form.recipient(
+                        class_      = 'form-control first-input', 
+                        placeholder = "recipient: jason", 
+                        required    = true
+                    ) 
+                }}
+            </div>
+            <div class="form-group">
+                {{ 
+                    form.frequency(
+                        class_ = 'form-control first-input', 
+                        placeholder = "reddit refresh rate: min 20 (seconds)", 
+                        required = true
+                    )
+                }}
+            </div>
 
-    <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary">
-            <input type="radio" name="title" value=1 data-id="0">Post Titles
-        </label>
-        <label class="btn btn-primary">
-            <input type="radio" name="comment" value=1 data-id="0">Post Comments
-        </label>
-        <label class="btn btn-primary">
-            <input type="radio" name="title_comment" value=1 data-id="0">Titles then comments
-        </label>
+            <h2>search location</h2>
+            <div class="form-group">
+            <div class="btn-group  btn-group-justified" data-toggle="buttons" >
+                <label class="btn btn-primary">
+                    <input type="radio" name="title" value=1 data-id="0">
+                    titles
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="comment" value=1 data-id="0">
+                    comments
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="title_comment" value=1 data-id="0">
+                    both
+                </label>
+            </div>
+            </div>
+
+            <h2>match action on Reddit</h2>
+            <div class="form-group">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="print" value=1 data-id="0">
+                    print to console
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="message" value=1 data-id="0">
+                    direct message
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="respond" value=1 data-id="0">
+                    response
+                </label>
+            </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block">
+                    submit
+                </button>
+            </div>
+        </form>
+        
     </div>
-    <h2>Action to take when a match is found</h2>
 
-    <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary">
-            <input type="radio" name="print" value=1 data-id="0">Print results to terminal
-        </label>
-        <label class="btn btn-primary">
-            <input type="radio" name="message" value=1 data-id="0">Message results to recipient
-        </label>
-        <label class="btn btn-primary">
-
-            <input type="radio" name="respond" value=1 data-id="0">Respond to results
-        </label>
+    <div class="col-md-8">
+        <h2>Generated Code</h2>
+<pre id="gen_code">
+</pre>
     </div>
-    <h2><input type="submit" value="Build it" class="btn btn-primary btn-lg btn-block"></h2>
-</form>
+</div>
 
 {% endblock %}
