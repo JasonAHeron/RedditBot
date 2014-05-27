@@ -9,6 +9,8 @@
     function generate_code (data) {
         var deferred = Q.defer();
 
+        console.log($);
+
         $.post(api_url, data, function(res){
             console.log('returned');
             deferred.resolve(res);
