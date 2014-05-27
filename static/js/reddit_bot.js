@@ -18,7 +18,7 @@
         return deferred.promise;
     }
 
-    function initiate_code_change() {
+    function initiate_code_change(data) {
         generate_code(data)
             .then(function(data){
 
@@ -47,11 +47,14 @@
         // start by hiding the container
         var genContainer = $('#gen-container');
 
+        // if container is already hidden, dont bother sliding up
         if(genContainer.is(':visible')){
             genContainer.slideUp()
-                .done(initiate_code_change);
+                .done(function(){
+                    initiate_code_change(data)
+                });
         } else {
-            initiate_code_change();
+            initiate_code_change(data);
         }
     });
 
