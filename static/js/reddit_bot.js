@@ -26,8 +26,8 @@
             searchwords : $('#ctrl-searchwords').val(),
             frequency   : $('#ctrl-frequency').val(),
             recipient   : $('#ctrl-recipient').val(),
-            type        : $('#ctrl-type').val(),
-            action      : $('#ctrl-action').val()
+            type        : "title",
+            action      : "print"
         };
 
         generate_code(data)
