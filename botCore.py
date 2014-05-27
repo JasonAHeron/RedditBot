@@ -181,7 +181,7 @@ def titleSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
             #
             try:
                 getHot    = tqdm(subreddit.get_hot(limit=100)
-                nameTuple = ("searching:" + subreddit_name), 100, False)
+                nameTuple = (("searching:" + subreddit_name), 100, False)
 
                 #
                 for submission in getHot, nameTuple:
@@ -231,7 +231,7 @@ def commentSearch(r, subreddit_names, searchWords, firstPass, already_done=[]):
 
         subreddit = r.get_subreddit(subreddit_name)
         getHot    = tqdm(subreddit.get_hot(limit=100)
-        nameTuple = ("searching:" + subreddit_name),100, False)
+        nameTuple = (("searching:" + subreddit_name),100, False)
 
         for submission in getHot, nameTuple:
             full_submission = r.get_submission(submission_id=submission.id)
