@@ -4,3 +4,7 @@
 html, body {
     padding-top: 25px;
 }
+
+#gen-code {
+    font-size: 0.6em;
+}
