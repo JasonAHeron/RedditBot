@@ -35,7 +35,7 @@ def printFunction(file, function):
         file.write(str(line))
 
 def compileBotCore(subreddit_names, search_words, frequency, recipient, type="comment", action="print"):
-    file = open('AACompiled.py', 'w+')
+    file = open('/home/ubuntu/AACompiled.py', 'w+')
     print >> file, 'import praw'
     print >> file, 'import time'
     print >> file, 'from tqdm import *'
@@ -71,7 +71,7 @@ def throwError(error = "unhandled", exit=True, code=0):
 #-------------------------------------#
 
 def botInit(username, password, auto=True):
-    r = praw.Reddit('PRAW learning and testing v0.5 by /u/syserror')
+    r = praw.Reddit('RedditBot generator v1 by /u/syserror')
     try:
         if auto:
             r.login(username, password)

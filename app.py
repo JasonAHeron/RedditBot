@@ -52,7 +52,7 @@ def home():
             action = "respond"
 
         compileBotCore(subreddit_names, search_words, frequency, recipient, type, action)
-        return send_from_directory(directory='.', filename='AACompiled.py')
+        return send_from_directory(directory='/home/ubuntu/', filename='AACompiled.py')
     else:
         form = searchBotForm(request.form)
         return render_template('pages/home.html', form=form)
@@ -89,4 +89,4 @@ if not app.debug:
 
 # Default port:
 if __name__ == '__main__':
-    app.run()
+    app.run(debug= False)
