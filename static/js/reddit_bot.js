@@ -14,7 +14,7 @@
     }
 
     // handle the form submission -- perform it asyncronously
-    $('#search-form').submit(function(e){
+    $('#btn-bot-form-submit').click(function(e){
         e.preventDefault();
 
         console.log("HOWDY");
@@ -24,8 +24,9 @@
             subreddits  : 'a, b',
             searchwords : 'a, b',
             frequency   : 20,
-            recipient   : 'nickswift498',
-            type        : 'comment'
+            recipient   : 'user',
+            type        : 'title',
+            action      : 'print'
         };
 
         generate_code(data)
