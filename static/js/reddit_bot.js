@@ -5,7 +5,7 @@
 
     var api_url = 'http://reddit.jheron.io/';
 
-    $('#gen-code').hide();
+    $('#gen-container').hide();
 
     // async post request
     function generate_code (data) {
@@ -16,6 +16,18 @@
         });
 
         return deferred.promise;
+    }
+
+    function initiate_code_change() {
+        generate_code(data)
+            .then(function(data){
+
+                $('#gen-code')
+                    .html(data)
+                    .done(function(){
+                        $('#gen-container').slideDown();
+                    });
+            });
     }
 
     // handle the form submission -- perform it asyncronously
@@ -32,12 +44,15 @@
             action      : "print"
         };
 
-        generate_code(data)
-            .then(function(data){
-                $('#gen-code')
-                    .html(data)
-                    .slideDown();
-            });
+        // start by hiding the container
+        var genContainer = $('#gen-container');
+
+        if(genContainer.is(':visible')){
+            genContainer.slideUp()
+                .done(initiate_code_change);
+        } else {
+            initiate_code_change();
+        }
     });
 
 })(jQuery, Q);
