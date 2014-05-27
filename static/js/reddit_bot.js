@@ -17,12 +17,15 @@
     $('#search-form').submit(function(e){
         e.preventDefault();
 
+        console.log("HOWDY");
+
         // get form control values
         var data = {
-            subreddits  : '',
-            searchwords : '',
-            frequency   : '',
-            recipient   : ''
+            subreddits  : 'a, b',
+            searchwords : 'a, b',
+            frequency   : 20,
+            recipient   : 'nickswift498',
+            type        : 'comment'
         };
 
         generate_code(data)
