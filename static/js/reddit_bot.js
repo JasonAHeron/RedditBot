@@ -3,21 +3,23 @@
  */
 (function($, Q){
 
+    var api_url = 'http://reddit.jheron.io/';
+
     // async post request
     function generate_code (data) {
         var deferred = Q.defer();
-        $.post('', function(res){
+
+        $.post(api_url, data, function(res){
             console.log('returned');
             deferred.resolve(res);
         });
+
         return deferred.promise();
     }
 
     // handle the form submission -- perform it asyncronously
     $('#btn-bot-form-submit').click(function(e){
         e.preventDefault();
-
-        console.log("HOWDY");
 
         // get form control values
         var data = {
