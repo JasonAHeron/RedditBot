@@ -5,6 +5,8 @@
 
     var api_url = 'http://reddit.jheron.io/';
 
+    $('#gen-code').hide();
+
     // async post request
     function generate_code (data) {
         var deferred = Q.defer();
@@ -32,8 +34,9 @@
 
         generate_code(data)
             .then(function(data){
-
-                // TODO: replace the contents of that code box with data
+                $('#gen-code')
+                    .html(data)
+                    .slideDown();
             });
     });
 
