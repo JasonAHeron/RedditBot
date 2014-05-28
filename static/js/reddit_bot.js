@@ -21,9 +21,7 @@
     // handle the form submission -- perform it asyncronously
     $('#btn-bot-form-submit').click(function(e){
         e.preventDefault();
-
-        console.log("reached");
-
+        
         // get form control values
         var data = {
             subreddits  : $('#ctrl-subreddits').val(),
@@ -38,6 +36,8 @@
 
         generate_code(data)
             .then(function(data){
+
+                console.log("reached");
 
                 $('#gen-code')
                     .html(data);
