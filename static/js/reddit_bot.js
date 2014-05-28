@@ -25,20 +25,20 @@
 
         // get form control values
         var type_box;
-        if ($('input[name=comment]:checked').val() === 1){
+        if ($('input[name=comment]:checked').val() === "1"){
             type_box = "comment"
-        } else if ($('input[name=title]:checked').val() === 1){
+        } else if ($('input[name=title]:checked').val() === "1"){
             type_box = "title"
-        } else if ($('input[name=title_comment]:checked').val() === 1){
+        } else if ($('input[name=title_comment]:checked').val() === "1"){
             type_box = "title_comment"
         }
 
         var action_box;
-        if (1 === $('input[name=print]:checked').val()) {
+        if ("1" === $('input[name=print]:checked').val()) {
             action_box = "print"
-        } else if (1 === $('input[name=message]:checked').val()) {
+        } else if ("1" === $('input[name=message]:checked').val()) {
             action_box = "message"
-        } else if (1 === $('input[name=respond]:checked').val()) {
+        } else if ("1" === $('input[name=respond]:checked').val()) {
             action_box = "respond"
         }
 
