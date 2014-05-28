@@ -45,7 +45,7 @@
                 // determine hash by pulling lists apart on commas
                 var subreddits  = $('#ctrl-subreddits').val().replace(',','').replace(' ', ''),
                     searchwords = $('#ctrl-searchwords').val().replace(',','').replace(' ', ''),
-                    hash        = CryptoJS.MD5(subreddits+searchwords+"title"+"print");
+                    hash        = CryptoJS.MD5(subreddits+searchwords+$('#ctrl-recipient').val()+"title"+"print");
 
                 $('#btn-gen-file').attr('href', 'http://reddit.jheron.io/static/bots/'+hash+'.py');
                 $('#gen-container').show();
