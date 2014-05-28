@@ -1,7 +1,7 @@
 /*
  * RedditBot -- Javascript application
  */
-(function($, Q){
+(function($, Q, CryptoJS){
 
     var api_url = 'http://reddit.jheron.io/';
 
@@ -57,4 +57,4 @@
             });
     });
 
-})(jQuery, Q);
+})(jQuery, Q, CryptoJS);
