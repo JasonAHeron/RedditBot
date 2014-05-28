@@ -61,11 +61,15 @@ def home():
 
         compileBotCore(subreddit_names, search_words, frequency, recipient, type, action, arghash_digest)
 
-
         return send_from_directory(directory='/var/www/Flask/RedditBot/static/bots/', filename='%s.py' % arghash_digest)
     else:
         form = searchBotForm(request.form)
         return render_template('pages/home.html', form=form)
+
+# Get an existing bot by asking for its hex digest
+@app.route('/bots/<bothex>')
+def bots(bothex):
+    return send_from_directory(directory='/var/www/Flask/RedditBot/static/bots/', filename='%s.py' % bothex)
 
 @app.route('/about')
 def about():

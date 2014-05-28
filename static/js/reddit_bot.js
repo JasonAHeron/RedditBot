@@ -40,7 +40,15 @@
                 $('#gen-code')
                     .html(data);
 
+                // determine hash by pulling lists apart on commas
+                var subreddits  = data.subreddits.replace(',','').replace(' ', ''),
+                    searchwords = data.searchwords.replace(',','').replace(' ', ''),
+                    hash        = CryptoJS.MD5(subreddits+searchwords+data.recipient+data.type+data.action);
+
+
+                $('#btn-gen-file').attr('href', 'http://reddit.jheron.io/static/bots/'+hash+'.py');
                 $('#gen-container').show();
+                $('#gen-alert-nocode').hide();
 
             });
     });

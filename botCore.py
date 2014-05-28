@@ -3,6 +3,8 @@ import time
 import praw
 import inspect
 
+from os.path import isfile
+
 #----------------------------------------------------------------------------#
 # Hardcoded data curators
 #----------------------------------------------------------------------------#
@@ -64,14 +66,15 @@ def compileBotCore(subreddit_names, search_words, frequency, recipient,
     compileBotCore
     """
 
-    # Attempt to read the file
-    try:
-       file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'r')
-    except IOError:
-        # file = open('/home/ubuntu/AACompiled.py', 'w+')
-        
+    filePath = '/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest
+
+    if isfile(filePath):
         # If it's not there, create it
-        file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'w+')
+        try:
+            file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'w+')
+        except IOError:
+            # Log an exception
+            return
 
         # Imports
         print >> file, 'import praw'
@@ -106,9 +109,7 @@ def compileBotCore(subreddit_names, search_words, frequency, recipient,
                 type,
                 action
             )
-    
-
-    file.close()
+        file.close()
 
 #----------------------------------------------------------------------------#
 # errors
