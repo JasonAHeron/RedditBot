@@ -4,13 +4,13 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <h1>RedditBot -- Proof of Concept</h1>
+        <h1>Proof of Concept - Search Bot Builder</h1>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>search configuration</h2>
+        <h2>Search Configuration</h2>
         <form id="search-form" method="post" role="form" action="http://reddit.jheron.io/">
             <div class="form-group">
                 {{ 
@@ -53,7 +53,7 @@
                 }}
             </div>
 
-            <h2>search location</h2>
+            <h2>Search Method</h2>
             <div class="form-group">
             <div class="btn-group  btn-group-justified" data-toggle="buttons" >
                 <label class="btn btn-primary">
@@ -71,7 +71,7 @@
             </div>
             </div>
 
-            <h2>match action on Reddit</h2>
+            <h2>Upon Result Found</h2>
             <div class="form-group">
             <div class="btn-group btn-group-justified" data-toggle="buttons">
                 <label class="btn btn-primary">
@@ -91,7 +91,7 @@
 
             <div class="form-group">
                 <button id="btn-bot-form-submit" class="btn btn-success btn-block">
-                    submit
+                    Build
                 </button>
             </div>
         </form>
@@ -102,13 +102,13 @@
         <h2>Generated Code</h2>
 
         <div id="gen-alert-nocode" class="alert alert-info text-center">
-            Fill out the form and click submit. The generated code will appear here.
+            Fill out the form and click build. The generated code will appear here.
         </div>
         <div id="gen-container">
 
             <pre id="gen-code" style="height:350px; overflow-y: scroll;"></pre>
 
-            <a id="btn-gen-file" href="#" class="btn btn-block btn-success">download this file</a>
+            <a id="btn-gen-file" href="#" class="btn btn-block btn-success">curl this file</a>
         </div>
     </div>
 </div>

@@ -24,13 +24,31 @@
 
 
         // get form control values
+        var type_ = 0;
+        if ($('input[name=comment]:checked').val() === 1){
+            type_ = "comment"
+        } else if ($('input[name=title]:checked').val() === 1){
+            type_ = "title"
+        } else if ($('input[name=title_comment]:checked').val() === 1){
+            type_ = "title_comment"
+        }
+
+        var action_ = 0;
+        if ($('input[name=print]:checked').val() === 1){
+            action_ = "print"
+        } else if ($('input[name=message]:checked').val() === 1){
+            action_ = "message"
+        } else if ($('input[name=respond]:checked').val() === 1){
+            action_ = "respond"
+        }
+
         var data = {
             subreddits  : $('#ctrl-subreddits').val(),
             searchwords : $('#ctrl-searchwords').val(),
             frequency   : $('#ctrl-frequency').val(),
             recipient   : $('#ctrl-recipient').val(),
-            type        : "title",
-            action      : "print"
+            type        : type_,
+            action      : action_
         };
 
         // start by hiding the container
@@ -47,7 +65,7 @@
                 // determine hash by pulling lists apart on commas
                 var subreddits  = $('#ctrl-subreddits').val().replace(',','').replace(' ', ''),
                     searchwords = $('#ctrl-searchwords').val().replace(',','').replace(' ', ''),
-                    hash        = CryptoJS.MD5(subreddits+searchwords+$('#ctrl-recipient').val()+"title"+"print");
+                    hash        = CryptoJS.MD5(subreddits+searchwords+$('#ctrl-recipient').val()+type_+action_);
 
                 $('#btn-gen-file').attr('href', 'http://reddit.jheron.io/static/bots/'+hash+'.py');
                 $('#gen-container').show();
