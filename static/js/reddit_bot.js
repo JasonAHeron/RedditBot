@@ -45,6 +45,8 @@
                     searchwords = data.searchwords.replace(',','').replace(' ', ''),
                     hash        = CryptoJS.MD5(subreddits+searchwords+data.recipient+data.type+data.action);
 
+                console.log(hash);
+
 
                 $('#btn-gen-file').attr('href', 'http://reddit.jheron.io/static/bots/'+hash+'.py');
                 $('#gen-container').show();

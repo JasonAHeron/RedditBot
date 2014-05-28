@@ -67,7 +67,7 @@ def home():
         return render_template('pages/home.html', form=form)
 
 # Get an existing bot by asking for its hex digest
-@app.route('/bots/<bothex>')
+@app.route('/bots/<bothex>', methods=['GET'])
 def bots(bothex):
     return send_from_directory(directory='/var/www/Flask/RedditBot/static/bots/', filename='%s.py' % bothex)
 
