@@ -43,10 +43,9 @@
                     .html(data);
 
                 // determine hash by pulling lists apart on commas
-                var subreddits  = data.subreddits.replace(',','').replace(' ', ''),
-                    searchwords = data.searchwords.replace(',','').replace(' ', '');
-
-                var hash        = CryptoJS.MD5(subreddits+searchwords+data.recipient+data.type+data.action);
+                var subreddits  = $('#ctrl-subreddits').val().replace(',','').replace(' ', ''),
+                    searchwords = $('#ctrl-searchwords').val().replace(',','').replace(' ', ''),
+                    hash        = CryptoJS.MD5(subreddits+searchwords+data.recipient+data.type+data.action);
 
                 console.log(subreddits+searchwords+data.recipient+data.type+data.action);
 
