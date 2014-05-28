@@ -8,6 +8,8 @@ from logging import Formatter, FileHandler
 from forms import *
 from botCore import *
 
+from hashlib import md5 as md5
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -52,25 +54,15 @@ def home():
         else:
             action = "print"
 
-        '''
-        if request.form.get("title"):
-            type = "title"
-        elif request.form.get("comment"):
-            type = "comment"
-        elif request.form.get("title_comment"):
-            type = "title_comment"
 
-        if request.form.get("print"):
-            action = "print"
-        elif request.form.get("message"):
-            action = "message"
-        elif request.form.get("respond"):
-            action = "respond"
+        arghash = md5()
+        arghash.update(subreddit_names+search_words+recipient+type+action)
+        arghash_digest = arghash.digest()
 
-        '''
+        compileBotCore(subreddit_names, search_words, frequency, recipient, type, action, arghash_digest)
 
-        compileBotCore(subreddit_names, search_words, frequency, recipient, type, action)
-        return send_from_directory(directory='/home/ubuntu/', filename='AACompiled.py')
+
+        return send_from_directory(directory='/var/www/Flask/RedditBot/static/bots/', filename='%s.py' % arghash_digest)
     else:
         form = searchBotForm(request.form)
         return render_template('pages/home.html', form=form)

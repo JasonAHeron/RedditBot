@@ -59,12 +59,14 @@ def printFunction(file, function):
         file.write(str(line))
 
 def compileBotCore(subreddit_names, search_words, frequency, recipient, 
-    type="comment", action="print"):
+    type="comment", action="print", hash_digest="AACompiled"):
     """
     compileBotCore
     """
 
-    file = open('/home/ubuntu/AACompiled.py', 'w+')
+    # file = open('/home/ubuntu/AACompiled.py', 'w+')
+
+    file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'w+')
     
     # Imports
     print >> file, 'import praw'
