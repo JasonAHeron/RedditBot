@@ -24,7 +24,7 @@
 
 
         // get form control values
-        var type_ = 0;
+        var type_;
         if ($('input[name=comment]:checked').val() === 1){
             type_ = "comment"
         } else if ($('input[name=title]:checked').val() === 1){
@@ -33,7 +33,7 @@
             type_ = "title_comment"
         }
 
-        var action_ = 0;
+        var action_;
         if ($('input[name=print]:checked').val() === 1){
             action_ = "print"
         } else if ($('input[name=message]:checked').val() === 1){
@@ -41,6 +41,9 @@
         } else if ($('input[name=respond]:checked').val() === 1){
             action_ = "respond"
         }
+
+        console.log("type: " + type_);
+        console.log("action: " + action_);
 
         var data = {
             subreddits  : $('#ctrl-subreddits').val(),
