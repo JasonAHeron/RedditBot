@@ -25,11 +25,11 @@
 
         // get form control values
         var type_box;
-        if ($('input[name=comment]:checked').val() === "1"){
+        if ("1" === $('input[name=comment]:checked').val()) {
             type_box = "comment"
-        } else if ($('input[name=title]:checked').val() === "1"){
+        } else if ("1" === $('input[name=title]:checked').val()) {
             type_box = "title"
-        } else if ($('input[name=title_comment]:checked').val() === "1"){
+        } else if ("1" === $('input[name=title_comment]:checked').val()) {
             type_box = "title_comment"
         }
 
@@ -41,9 +41,6 @@
         } else if ("1" === $('input[name=respond]:checked').val()) {
             action_box = "respond"
         }
-
-        console.log("type: " + type_box);
-        console.log("action: " + action_box);
 
         var data = {
             subreddits  : $('#ctrl-subreddits').val(),
@@ -58,9 +55,6 @@
 
         generate_code(data)
             .then(function(data){
-
-                console.log(CryptoJS);
-                console.log(data);
 
                 $('#gen-code')
                     .html(data);
