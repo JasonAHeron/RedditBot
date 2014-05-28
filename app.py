@@ -57,7 +57,7 @@ def home():
 
         arghash = md5()
         arghash.update(''.join(subreddit_names)+''.join(search_words[0])+recipient+type+action)
-        arghash_digest = arghash.digest().encode("utf-8")
+        arghash_digest = arghash.hexdigest().encode("utf-8")
 
         compileBotCore(subreddit_names, search_words, frequency, recipient, type, action, arghash_digest)
 

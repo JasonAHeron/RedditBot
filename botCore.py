@@ -64,43 +64,48 @@ def compileBotCore(subreddit_names, search_words, frequency, recipient,
     compileBotCore
     """
 
-    # file = open('/home/ubuntu/AACompiled.py', 'w+')
+    # Attempt to read the file
+    try:
+       file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'r')
+    except IOError:
+        # file = open('/home/ubuntu/AACompiled.py', 'w+')
+        
+        # If it's not there, create it
+        file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'w+')
 
-    file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'w+')
-    
-    # Imports
-    print >> file, 'import praw'
-    print >> file, 'import time'
-    print >> file, 'from tqdm import *'
-    print >> file, 'subreddit_names = ', subreddit_names
-    print >> file, 'search_words = ', search_words
-    print >> file, 'frequency = {}'.format(frequency)
-    print >> file, 'recipient = "{}"'.format(recipient)
+        # Imports
+        print >> file, 'import praw'
+        print >> file, 'import time'
+        print >> file, 'from tqdm import *'
+        print >> file, 'subreddit_names = ', subreddit_names
+        print >> file, 'search_words = ', search_words
+        print >> file, 'frequency = {}'.format(frequency)
+        print >> file, 'recipient = "{}"'.format(recipient)
 
-    # boilerplate functions
-    printFunction(file, throwError)
-    printFunction(file, botInit)
-    printFunction(file, eval(action + "Response"))
+        # boilerplate functions
+        printFunction(file, throwError)
+        printFunction(file, botInit)
+        printFunction(file, eval(action + "Response"))
 
-    # title search
-    if(type is "title_comment"):
-        printFunction(file, titleSearch)
+        # title search
+        if(type is "title_comment"):
+            printFunction(file, titleSearch)
 
-    # Searchbot and runBot
-    printFunction(file, eval(type + "Search"))
-    printFunction(file, SearchBot)
-    printFunction(file, runBot)
-    
-    # App start code
-    print >> file, 'if __name__ == "__main__":'
-    print >> file, "    runBot(%s, %s, %s, %s, %s, %s)" % (
-            "subreddit_names", 
-            "search_words", 
-            "frequency", 
-            "recipient", 
-            type, 
-            action
-        )
+        # Searchbot and runBot
+        printFunction(file, eval(type + "Search"))
+        printFunction(file, SearchBot)
+        printFunction(file, runBot)
+
+        # App start code
+        print >> file, 'if __name__ == "__main__":'
+        print >> file, "    runBot(%s, %s, %s, %s, %s, %s)" % (
+                "subreddit_names",
+                "search_words",
+                "frequency",
+                "recipient",
+                type,
+                action
+            )
     
 
     file.close()
