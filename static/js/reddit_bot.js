@@ -22,6 +22,8 @@
     $('#btn-bot-form-submit').click(function(e){
         e.preventDefault();
 
+        console.log("Howdy");
+
         // get form control values
         var data = {
             subreddits  : $('#ctrl-subreddits').val(),
