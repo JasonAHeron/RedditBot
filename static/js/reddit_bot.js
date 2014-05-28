@@ -24,22 +24,22 @@
 
 
         // get form control values
-        var type_;
+        var type_box;
         if ($('input[name=comment]:checked').val() === 1){
-            type_ = "comment"
+            type_box = "comment"
         } else if ($('input[name=title]:checked').val() === 1){
-            type_ = "title"
+            type_box = "title"
         } else if ($('input[name=title_comment]:checked').val() === 1){
-            type_ = "title_comment"
+            type_box = "title_comment"
         }
 
-        var action_;
-        if ($('input[name=print]:checked').val() === 1){
-            action_ = "print"
-        } else if ($('input[name=message]:checked').val() === 1){
-            action_ = "message"
-        } else if ($('input[name=respond]:checked').val() === 1){
-            action_ = "respond"
+        var action_box;
+        if (1 === $('input[name=print]:checked').val()) {
+            action_box = "print"
+        } else if (1 === $('input[name=message]:checked').val()) {
+            action_box = "message"
+        } else if (1 === $('input[name=respond]:checked').val()) {
+            action_box = "respond"
         }
 
         console.log("type: " + type_);
@@ -50,8 +50,8 @@
             searchwords : $('#ctrl-searchwords').val(),
             frequency   : $('#ctrl-frequency').val(),
             recipient   : $('#ctrl-recipient').val(),
-            type        : type_,
-            action      : action_
+            type        : type_box,
+            action      : action_box
         };
 
         // start by hiding the container
