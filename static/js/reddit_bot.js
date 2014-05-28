@@ -38,6 +38,7 @@
             .then(function(data){
 
                 console.log(CryptoJS);
+                console.log(data);
 
                 $('#gen-code')
                     .html(data);
