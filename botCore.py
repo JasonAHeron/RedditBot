@@ -2,8 +2,7 @@ __author__ = 'jason'
 import time
 import praw
 import inspect
-
-from os.path import isfile
+import os.path
 
 #----------------------------------------------------------------------------#
 # Hardcoded data curators
@@ -68,7 +67,7 @@ def compileBotCore(subreddit_names, search_words, frequency, recipient,
 
     filePath = '/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest
 
-    if isfile(filePath):
+    if not os.path.isfile(filePath):
         # If it's not there, create it
         try:
             file = open('/var/www/Flask/RedditBot/static/bots/%s.py' % hash_digest, 'w+')
