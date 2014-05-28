@@ -42,8 +42,8 @@
             action_box = "respond"
         }
 
-        console.log("type: " + type_);
-        console.log("action: " + action_);
+        console.log("type: " + type_box);
+        console.log("action: " + action_box);
 
         var data = {
             subreddits  : $('#ctrl-subreddits').val(),
