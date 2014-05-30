@@ -1,12 +1,12 @@
 """
-    ____           __    ___ __  ____        __ 
-   / __ \___  ____/ /___/ (_) /_/ __ )____  / /_
-  / /_/ / _ \/ __  / __  / / __/ __  / __ \/ __/
- / _, _/  __/ /_/ / /_/ / / /_/ /_/ / /_/ / /_  
-/_/ |_|\___/\__,_/\__,_/_/\__/_____/\____/\__/  
-                                                
-       Written by Jason Heron & Nick Wood
-                 (c) 2014
+                     ____           __    ___ __  ____        __ 
+                    / __ \___  ____/ /___/ (_) /_/ __ )____  / /_
+                   / /_/ / _ \/ __  / __  / / __/ __  / __ \/ __/
+                  / _, _/  __/ /_/ / /_/ / / /_/ /_/ / /_/ / /_  
+                 /_/ |_|\___/\__,_/\__,_/_/\__/_____/\____/\__/  
+                                                                 
+                        Written by Jason Heron & Nick Wood         
+                                     (c) 2014
 botgen/controllers.py 
 blueprints for the main reddit bot generator
 """
@@ -88,6 +88,7 @@ def botgen_generate():
 
 
 # About page
+# TODO: this page doesn't quite work yet. FIX THIS!
 @bpnt_botgen.route('/about', methods=['GET'])
 def botgen_about():
     return render_template('botgen/about.html')
