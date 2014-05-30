@@ -1,0 +1,10 @@
+/*
+ * RedditBot CSS rules
+ */
+html, body {
+    padding-top: 25px;
+}
+
+#gen-code {
+    font-size: 0.75em;
+}

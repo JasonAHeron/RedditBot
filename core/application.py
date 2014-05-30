@@ -21,8 +21,16 @@ from logging import Formatter, FileHandler
 from forms import *
 from botCore import *
 
+<<<<<<< HEAD:core/application.py
 # Import blueprints
 from apps.botgen.controllers import bpnt_botgen
+=======
+from hashlib import md5 as md5
+
+#----------------------------------------------------------------------------#
+# App Config.
+#----------------------------------------------------------------------------#
+>>>>>>> ubuntu:app.py
 
 # Initialize the app
 app = Flask(__name__)
@@ -42,25 +50,37 @@ def home():
         frequency = getFrequency(request.form['frequency'])
         recipient = getRecipient(request.form['recipient'])
 
-        if request.form.get("title"):
+        allowed_types = ["title", "comment", "title_comment"]
+        allowed_actions = ["print", "message", "respond"]
+
+        attempted_type = request.form.get("type")
+        if attempted_type in allowed_types:
+            type = attempted_type
+        else:
             type = "title"
-        elif request.form.get("comment"):
-            type = "comment"
-        elif request.form.get("title_comment"):
-            type = "title_comment"
 
-        if request.form.get("print"):
+        attempted_action = request.form.get("action")
+        if attempted_action in allowed_actions:
+            action = attempted_action
+        else:
             action = "print"
-        elif request.form.get("message"):
-            action = "message"
-        elif request.form.get("respond"):
-            action = "respond"
 
-        compileBotCore(subreddit_names, search_words, frequency, recipient, type, action)
-        return send_from_directory(directory='.', filename='AACompiled.py')
+
+        arghash = md5()
+        arghash.update(''.join(subreddit_names)+''.join(search_words[0])+recipient+type+action)
+        arghash_digest = arghash.hexdigest().encode("utf-8")
+
+        compileBotCore(subreddit_names, search_words, frequency, recipient, type, action, arghash_digest)
+
+        return send_from_directory(directory='/var/www/Flask/RedditBot/static/bots/', filename='%s.py' % arghash_digest)
     else:
         form = searchBotForm(request.form)
         return render_template('pages/home.html', form=form)
+
+# Get an existing bot by asking for its hex digest
+@app.route('/bots/<bothex>', methods=['GET'])
+def bots(bothex):
+    return send_from_directory(directory='/var/www/Flask/RedditBot/static/bots/', filename='%s.py' % bothex)
 
 @app.route('/about')
 def about():
@@ -93,3 +113,9 @@ if not app.debug:
 #----------------------------------------------------------------------------#
 '''
 
+<<<<<<< HEAD:core/application.py
+=======
+# Default port:
+if __name__ == '__main__':
+    app.run(debug= False)
+>>>>>>> ubuntu:app.py

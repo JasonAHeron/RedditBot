@@ -1,0 +1,79 @@
+<!-- 
+RedditBot: main layout
+  -->
+<!doctype html>
+
+<html lang="en-us">
+    <head>
+        <!-- metadata -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
+
+        <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="static/css/reddit_bot.css">
+
+        <!-- modernizr and media queries for <= IE9 -->
+        <!--<script src="/static/js/libs/modernizr-2.6.2.min.js"></script> -->
+        <!--[if lt IE 9]>
+            <script src="/static/js/libs/respond-1.3.0.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <!-- Page header -->
+        <header class="navbar navbar-default navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button 
+                        class="navbar-toggle" 
+                        type="button" 
+                        data-toggle="collapse" 
+                        data-target=".rb-navbar-collapse">
+
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="../" class="navbar-brand">RedditBot</a>
+                </div>
+
+                <nav class="collapse navbar-collapse rb-navbar-collapse" role="navigation">
+                    <ul class="nav navbar-nav">
+                        <li class="{{'active' if request.endpoint == 'about'}}">
+                            <a href="{{ url_for('about') }}" >About</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- app content -->
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-block alert-error">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}{% endif %}{% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- load scripts -->
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+        <script type="text/javascript" 
+            src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="static/js/q.min.js"></script>
+        <!-- application script -->
+        <script type="text/javascript" src="static/js/reddit_bot.js"></script>
+    </body>
+</html>
