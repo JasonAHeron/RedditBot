@@ -3,3 +3,4 @@ Flask-SQLAlchemy==1.0
 Flask-WTF==0.8.4
 praw==2.1.12
 tqdm==1.0
+pymongo==2.6.3

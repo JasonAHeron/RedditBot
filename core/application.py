@@ -14,15 +14,8 @@ this file contains the main application startup code -- it is imported by
 deploy.py to start the RedditBot application
 """
 
-# Import what we need from Flask
-# TODO: optimize these imports. * is evil!
-from flask import *
-import logging
-from logging import Formatter, FileHandler
-from forms import *
-from botCore import *
-
-# Import blueprints
+# imports
+from flask import Flask
 from apps.botgen.controllers import bpnt_botgen
 
 # Initialize the app
