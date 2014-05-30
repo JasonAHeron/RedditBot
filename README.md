@@ -14,11 +14,11 @@ Changelog:
 
 * General refactor of the project heirarchy. 
 
-deploy.py is used to launch the application rather than application.py, which is
-inside core/
+> deploy.py is used to launch the application rather than application.py, which is
+> inside core/
 
-We're doing this because everything in the top-level directory should be related
-to deployment on various platforms rather being application code.
+> We're doing this because everything in the top-level directory should be related
+> to deployment on various platforms rather being application code.
 
 * Using Flask blueprints for controllers
 
