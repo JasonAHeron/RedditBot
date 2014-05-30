@@ -1,0 +1,116 @@
+{% extends 'layouts/layout_redditbot_main.html' %}
+{% block title %}Build a Reddit Bot{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Proof of Concept - Search Bot Builder</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Search Configuration</h2>
+        <form id="search-form" method="post" role="form" action="http://reddit.jheron.io/">
+            <div class="form-group">
+                {{ 
+                    form.subreddits(
+                        id          = 'ctrl-subreddits',
+                        class_      = 'form-control first-input', 
+                        placeholder = "subreddits: buildapcsales, hardwareswap",
+                        required    = true, autofocus = true
+                    ) 
+                }}
+            </div>
+            <div class="form-group">
+                {{ 
+                    form.searchwords(
+                        id          = 'ctrl-searchwords',
+                        class_      = 'form-control first-input', 
+                        placeholder = "search terms: gpu, cpu", 
+                        required    = true
+                    ) 
+                }}
+            </div>
+            <div class="form-group">
+                {{ 
+                    form.recipient(
+                        id          = 'ctrl-recipient',
+                        class_      = 'form-control first-input', 
+                        placeholder = "recipient: jason", 
+                        required    = true
+                    ) 
+                }}
+            </div>
+            <div class="form-group">
+                {{ 
+                    form.frequency(
+                        id          = 'ctrl-frequency',
+                        class_      = 'form-control first-input', 
+                        placeholder = "reddit refresh rate: min 20 (seconds)", 
+                        required    = true
+                    )
+                }}
+            </div>
+
+            <h2>Search Method</h2>
+            <div class="form-group">
+            <div class="btn-group  btn-group-justified" data-toggle="buttons" >
+                <label class="btn btn-primary">
+                    <input type="radio" name="title" value=1 data-id="0">
+                    titles
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="comment" value=1 data-id="0">
+                    comments
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="title_comment" value=1 data-id="0">
+                    both
+                </label>
+            </div>
+            </div>
+
+            <h2>Upon Result Found</h2>
+            <div class="form-group">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="radio" name="print" value=1 data-id="0">
+                    print to console
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="message" value=1 data-id="0">
+                    message user
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="respond" value=1 data-id="0">
+                    respond
+                </label>
+            </div>
+            </div>
+
+            <div class="form-group">
+                <button id="btn-bot-form-submit" class="btn btn-success btn-block">
+                    Build
+                </button>
+            </div>
+        </form>
+        
+    </div>
+
+    <div class="col-md-8">
+        <h2>Generated Code</h2>
+
+        <div id="gen-alert-nocode" class="alert alert-info text-center">
+            Fill out the form and click build. The generated code will appear here.
+        </div>
+        <div id="gen-container">
+
+            <pre id="gen-code" style="height:350px; overflow-y: scroll;"></pre>
+
+            <a id="btn-gen-file" href="#" class="btn btn-block btn-success">click for cURL page</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
